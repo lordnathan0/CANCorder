@@ -1,66 +1,112 @@
+import java.io.File;
 import java.io.FileWriter;
-
-import components.map.Map;
-import components.map.Map.Pair;
-import components.map.Map1L;
-import components.queue.Queue;
-import components.queue.Queue1L;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.LinkedList;
+import java.util.Map;
 
 /**
- * Data Logging Class
+ * http://derekmolloy.ie/automatically-setting-the-beaglebone-black-time-using-ntp/
+ */
+
+/**
+ * Data Logging Class.
  * 
  * @author Ishmeet
  * 
  */
 public final class DataLogger {
 
-    //Declare string as current working directory
-    private String directory = System.getProperty("user.dir");
+    /**
+     * Declare string as current working directory.
+     */
+    private String directory;
 
     /**
-     * Constructor to intialize directory. Constructor gets a string object with
-     * new directory name.
+     * Default Constructor.
+     */
+    public DataLogger() {
+        this.directory = System.getProperty("user.dir");
+    }
+
+    /**
+     * Constructor to initialize directory. Constructor gets a string object
+     * with new directory name.
+     * 
+     * @param s
+     *            The string representation of the new directory.
      */
     public DataLogger(String s) {
         this.directory = s;
     }
 
     /**
-     * Method to log data onto a csv file
+     * Method to log data onto a csv file.
+     * 
+     * @param b
+     *            The Bike Object
      */
-    public void DataLog(Bike b) {
-        /* Writing csv files using open csv */
-        CSVWriter writer = new CSVWriter(new FileWriter(this.directory
-                + "file.csv", ','));
-        /*
-         * Get Map and write headers.
-         */
-        writer.write("Time");
-        ;
+    public void dataLog(Bike b) {
 
-        Queue<Double> q = new Queue1L<Double>();
-        Map<String, Double> temp = new Map1L<String, Double>();
+        int i = 0;
+        String fileName = "file" + i + ".csv";
+        File f = new File(this.directory + fileName);
 
-        while (b.bikeData.size() > 0) {
-            Pair<String, Double> p = b.bikeData.removeAny();
-            //Write the header
-            writer.write(p.key());
-            //Add value to queue to keep order
-            q.enqueue(p.value());
-            //Add pair to temporary map
-            temp.add(p.key(), p.value());
+        while (f.exists()) {
+            i++;
+            fileName = "file" + i + ".csv";
+            f = new File(this.directory + fileName);
         }
-        b.bikeData.transferFrom(temp);
-        writer.write("\n");
-        writer.write(/* Write time here. Still working on it */);
-
-        while (q.length() > 0) {
-            double value = q.dequeue();
-            writer.write(value);
+        try {
+            f.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        try {
 
-        writer.close();
+            FileWriter writer = new FileWriter(f);
 
+            writer.append("Time");
+            writer.append(',');
+
+            /* Get MAP and write headers */
+            LinkedList<Double> q = new LinkedList<>();
+            Map<String, Double> map = b.getData();
+
+            for (Map.Entry<String, Double> entry : map.entrySet()) {
+                writer.append(entry.getKey());
+                q.add(entry.getValue());
+                writer.append(',');
+            }
+            writer.append('\n');
+
+            /**
+             * WRITE THE TIME HERE, TEMP is 12PM.
+             */
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
+                    .format(Calendar.getInstance().getTime());
+            writer.append(timeStamp);
+            writer.append(',');
+
+            /* Write appropriate values */
+            while (q.size() > 0) {
+                writer.append(String.valueOf(q.poll()));
+                writer.append(',');
+            }
+
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
+    public static void main(String[] args) {
+        DBFParser d = new DBFParser("data\\test.dbf");
+        Bike b = new Bike(d);
+        DataLogger log = new DataLogger();
+        log.dataLog(b);
+        System.out.print("Done!");
+    }
 }
