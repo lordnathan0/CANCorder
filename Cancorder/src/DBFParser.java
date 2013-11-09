@@ -13,13 +13,13 @@ import java.util.Set;
 public class DBFParser {
 
 	
-	public Map<Integer,ArrayList<Signal<String, Integer, Integer>>> dbfMap; // ONLY TEMPORARY UNTIL YOU MAKE ALL THE GET METHODS
-	private ArrayList<Signal<String, Integer, Integer>> message;
-	private ArrayList<Signal<String, Integer, Integer>> allSignals;
+	public Map<Integer,ArrayList<Signal<String, Integer, Integer, Integer>>> dbfMap; // ONLY TEMPORARY UNTIL YOU MAKE ALL THE GET METHODS
+	private ArrayList<Signal<String, Integer, Integer, Integer>> message;
+	private ArrayList<Signal<String, Integer, Integer, Integer>> allSignals;
 	
 	private void createNewParser() {
-		dbfMap = new HashMap<Integer, ArrayList<Signal<String, Integer, Integer>>>(100);
-		allSignals = new ArrayList<Signal<String, Integer, Integer>>();
+		dbfMap = new HashMap<Integer, ArrayList<Signal<String, Integer, Integer, Integer>>>(100);
+		allSignals = new ArrayList<Signal<String, Integer, Integer, Integer>>();
 	}
 	
 	public DBFParser(String file) {
@@ -43,7 +43,7 @@ public class DBFParser {
 					String[] strParts = currentLine.split(",");
 					Integer bits = (Integer.parseInt(strParts[2])-1) * 8 + Integer.parseInt(strParts[3]);
 					//System.out.println("BITS: " + bits.toString());
-					Signal<String, Integer, Integer> signal = new Signal<String, Integer, Integer>(strParts[0].substring(16), bits, Integer.parseInt(strParts[1]));
+					Signal<String, Integer, Integer, Integer> signal = new Signal<String, Integer, Integer, Integer>(strParts[0].substring(16), bits, Integer.parseInt(strParts[1]), Integer.parseInt(strParts[7]));
 					allSignals.add(signal);
 					//System.out.print(signal.signalID + " ");
 					//System.out.print(signal.startBit + " ");
@@ -64,7 +64,7 @@ public class DBFParser {
 		}
 	}
 	
-	public final ArrayList<Signal<String, Integer, Integer>> getSignals() {
+	public final ArrayList<Signal<String, Integer, Integer, Integer>> getSignals() {
 		return allSignals;
 	}
 
