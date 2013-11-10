@@ -14,7 +14,7 @@ public class tests {
 	}
 
 	public static void main(String[] args) {
-		DBFParser parser = new DBFParser("test.dbf");
+		DBFParser parser = new DBFParser("test.dbc");
 		testGetSignals(parser);
 		Bike bike = new Bike(parser);
 		Translator translator = new Translator(parser);
@@ -41,9 +41,9 @@ public class tests {
 	
 	
 	public static void testGetSignals(DBFParser parser) {
-		ArrayList<Signal<String, Integer, Integer, Integer>> signals = parser.getSignals();
-		for(Signal<String, Integer, Integer, Integer> signal : signals) {
-			System.out.println(signal.signalID + ", start: " + signal.startBit + ", length: " + signal.length);
+		ArrayList<Signal<String, Integer, Integer, Integer, String>> signals = parser.getSignals();
+		for(Signal<String, Integer, Integer, Integer, String> signal : signals) {
+	    	System.out.println(signal.signalID + " " + signal.startBit + " " + signal.length + " " + signal.byteOrder + " " + signal.dataType);
 		}
 	}
 	

@@ -13,13 +13,13 @@ import java.util.Set;
 public class DBFParser {
 
 	
-	public Map<Integer,ArrayList<Signal<String, Integer, Integer, Integer>>> dbfMap; // ONLY TEMPORARY UNTIL YOU MAKE ALL THE GET METHODS
-	private ArrayList<Signal<String, Integer, Integer, Integer>> message;
-	private ArrayList<Signal<String, Integer, Integer, Integer>> allSignals;
+	public Map<Integer,ArrayList<Signal<String, Integer, Integer, Integer, String>>> dbfMap; // ONLY TEMPORARY UNTIL YOU MAKE ALL THE GET METHODS
+	private ArrayList<Signal<String, Integer, Integer, Integer, String>> message;
+	private ArrayList<Signal<String, Integer, Integer, Integer, String>> allSignals;
 	
 	private void createNewParser() {
-		dbfMap = new HashMap<Integer, ArrayList<Signal<String, Integer, Integer, Integer>>>(100);
-		allSignals = new ArrayList<Signal<String, Integer, Integer, Integer>>();
+		dbfMap = new HashMap<Integer, ArrayList<Signal<String, Integer, Integer, Integer, String>>>(100);
+		allSignals = new ArrayList<Signal<String, Integer, Integer, Integer, String>>();
 	}
 	
 	public DBFParser(String file) {
@@ -34,27 +34,38 @@ public class DBFParser {
 			Integer key = 0;
 			while(fileReader.hasNext()) {
 				String currentLine = fileReader.nextLine();
-				if(currentLine.startsWith("[START_MSG]")) {
-					String[] strParts = currentLine.split(",");
+				if(currentLine.startsWith("BO_")) {
+					String[] strParts = currentLine.split(" ");
 					key = Integer.parseInt(strParts[1]);
-					message = new ArrayList<>(Integer.parseInt(strParts[4]));
+					message = new ArrayList<>();
 				}
-				if(currentLine.startsWith("[START_SIGNALS]")) {
-					String[] strParts = currentLine.split(",");
-					Integer bits = (Integer.parseInt(strParts[2])-1) * 8 + Integer.parseInt(strParts[3]);
-					//System.out.println("BITS: " + bits.toString());
-					Signal<String, Integer, Integer, Integer> signal = new Signal<String, Integer, Integer, Integer>(strParts[0].substring(16), bits, Integer.parseInt(strParts[1]), Integer.parseInt(strParts[7]));
+				if(currentLine.startsWith(" SG_")) {
+					String[] strParts = currentLine.split("[ |@]");
+					Integer bits = (Integer.parseInt(strParts[5])) + Integer.parseInt(strParts[4]); // May not need anymore
+					System.out.println("BITS: " + bits.toString());
+					Signal<String, Integer, Integer, Integer, String> signal = new Signal<String, Integer, Integer, Integer, String>(strParts[2], Integer.parseInt(strParts[4]), Integer.parseInt(strParts[5]), Integer.parseInt(strParts[6].substring(0, 1)), strParts[6].substring(1,2));
 					allSignals.add(signal);
-					//System.out.print(signal.signalID + " ");
-					//System.out.print(signal.startBit + " ");
-					//System.out.print(signal.length + " ");
-					//System.out.println();
 					message.add(signal);
 				}
-				if(currentLine.startsWith("[END_MSG]")) {
-					dbfMap.put(key, message);	
+				if(currentLine.startsWith("")) {
+					if(!(dbfMap.containsKey(key) && message == null)){
+						dbfMap.put(key, message);	
+					}
 				}
-
+				if(currentLine.startsWith("SIG_VALTYPE_")) {
+					String[] strParts = currentLine.split(" ");
+					ArrayList<Signal<String, Integer, Integer, Integer, String>> messageSignals = dbfMap.get(Integer.parseInt(strParts[1]));
+					for(Signal<String, Integer, Integer, Integer, String> signal : messageSignals) {
+						if(signal.signalID.equals(strParts[2])) {
+							if(Integer.parseInt(strParts[4].substring(0, 1)) == 1){
+								signal.dataType = "float";
+							}
+							if(Integer.parseInt(strParts[4].substring(0, 1)) == 2) {
+								signal.dataType = "double";
+							}
+						}
+					}
+				}
 			}
 			
 			fileReader.close();
@@ -64,12 +75,12 @@ public class DBFParser {
 		}
 	}
 	
-	public final ArrayList<Signal<String, Integer, Integer, Integer>> getSignals() {
+	public final ArrayList<Signal<String, Integer, Integer, Integer, String>> getSignals() {
 		return allSignals;
 	}
 
 	public static void main(String[] args){
-	    DBFParser parser = new DBFParser("test.dbf");
+	    DBFParser parser = new DBFParser("wavesculper200.dbc");
 	}
 }
 

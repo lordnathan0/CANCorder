@@ -33,7 +33,7 @@ public final class Bike {
         /*
          * Create ArrayList based on DBF signal type
          */
-        ArrayList<Signal<String, Integer, Integer, Integer>> a = parsedObject
+        ArrayList<Signal<String, Integer, Integer, Integer, String>> a = parsedObject
                 .getSignals();
 
         //Update the Map with data from arrayList

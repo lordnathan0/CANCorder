@@ -1,15 +1,17 @@
 
 
-public final class Signal<X, Y, Z, A> {
-	public final X signalID;
-	public final Y startBit;
-	public final Z length;
-	public final A byteOrder;
-	public Signal(X x, Y y, Z z, A a) {
-		this.signalID = x;
-		this.startBit = y;
-		this.length = z;
-		this.byteOrder = a;
+public final class Signal<A, B, C, D, E> {
+	public A signalID;
+	public B startBit;
+	public C length;
+	public D byteOrder;
+	public E dataType;
+	public Signal(A a, B b, C c, D d, E e) {
+		this.signalID = a;
+		this.startBit = b;
+		this.length = c;
+		this.byteOrder = d;
+		this.dataType = e;
 	}
 }
 
