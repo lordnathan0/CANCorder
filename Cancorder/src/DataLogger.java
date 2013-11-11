@@ -1,7 +1,6 @@
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Map;
-import java.util.PriorityQueue;
+/**
+ * http://derekmolloy.ie/automatically-setting-the-beaglebone-black-time-using-ntp/
+ */
 
 /**
  * Data Logging Class.
@@ -14,7 +13,14 @@ public final class DataLogger {
     /**
      * Declare string as current working directory.
      */
-    private String directory = System.getProperty("user.dir");
+    private String directory;
+
+    /**
+     * Default Constructor.
+     */
+    public DataLogger() {
+        this.directory = System.getProperty("user.dir");
+    }
 
     /**
      * Constructor to initialize directory. Constructor gets a string object
@@ -35,14 +41,29 @@ public final class DataLogger {
      */
     public void dataLog(Bike b) {
 
+        int i = 0;
+        String fileName = "file" + i + ".csv";
+        File f = new File(this.directory + fileName);
+
+        while (f.exists()) {
+            i++;
+            fileName = "file" + i + ".csv";
+            f = new File(this.directory + fileName);
+        }
         try {
-            FileWriter writer = new FileWriter(this.directory + "\file.csv");
+            f.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+
+            FileWriter writer = new FileWriter(f);
 
             writer.append("Time");
             writer.append(',');
 
             /* Get MAP and write headers */
-            PriorityQueue<Double> q = new PriorityQueue<>();
+            LinkedList<Double> q = new LinkedList<>();
             Map<String, Double> map = b.getData();
 
             for (Map.Entry<String, Double> entry : map.entrySet()) {
@@ -55,13 +76,14 @@ public final class DataLogger {
             /**
              * WRITE THE TIME HERE, TEMP is 12PM.
              */
-            writer.append("12PM");
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
+                    .format(Calendar.getInstance().getTime());
+            writer.append(timeStamp);
+            writer.append(',');
 
             /* Write appropriate values */
             while (q.size() > 0) {
-                double v = q.poll();
-                String val = String.valueOf(v);
-                writer.append(val);
+                writer.append(String.valueOf(q.poll()));
                 writer.append(',');
             }
 

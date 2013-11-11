@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Bike Class.
@@ -23,6 +20,17 @@ public final class Bike {
     private Map<String, Double> bikeData = new HashMap<String, Double>();
 
     /**
+     * Test Constructor.
+     */
+    public Bike() {
+        this.bikeData.put("ken", 1.0);
+        this.bikeData.put("James", 2.0);
+        this.bikeData.put("Kate", 3.0);
+        this.bikeData.put("Ish", 5.0);
+        this.bikeData.put("Nathan", 6.0);
+    }
+
+    /**
      * Public constructor to instantiate the Bike object.
      * 
      * @param parsedObject
@@ -33,7 +41,7 @@ public final class Bike {
         /*
          * Create ArrayList based on DBF signal type
          */
-        ArrayList<Signal<String, Integer, Integer, Integer>> a = parsedObject
+        ArrayList<Signal<String, Integer, Integer>> a = parsedObject
                 .getSignals();
 
         //Update the Map with data from arrayList
