@@ -1,3 +1,4 @@
+import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
@@ -28,12 +29,10 @@ public class Translator {
 		if(dbfMap.dbfMap.containsKey(messageID)) {
 			ArrayList<Signal<String, Integer, Integer, Integer, String>> dbfSignals = dbfMap.dbfMap.get(messageID);
 			for (Signal<String, Integer, Integer, Integer, String> signal : dbfSignals) {
-				//Create a smaller array from message array containing only the signal data needed
-				byte[] signalArray = new byte[signal.length/8];
-				System.arraycopy(frameData, signal.startBit/8, signalArray, 0, signal.length/8);
-				//Create a ByteBuffer that holds n bytes where n = |signal array|
+				
+				//Create a ByteBuffer that holds 8 bytes (entire message)
 				ByteBuffer buffer = ByteBuffer.allocate(8);
-				//Get data order and change ByteBuffer to BIG_ENDIAN OR LITTLE_ENDIAN
+				//Get data order and change ByteBuffer to BIG_ENDIAN OR LITTLE_ENDIAN ** BIG_ENDIAN BY DEFAULT
 				if(signal.byteOrder.equals(0)) {
 					buffer.order(ByteOrder.BIG_ENDIAN);
 				}
@@ -45,24 +44,38 @@ public class Translator {
 				//Get most recent bike data. MAY BE MORE EFFICIENT YET CORRECT TO THROW OUTSIDE THE LOOP
 				Map<String, Double> bikeData = bike.getData();
 				long bitmask = 0;
-				System.out.println("Offset: " + (signal.startBit/8) + "; Modified: " + (signal.startBit/8-1));
-				System.out.println("Length: " + (signal.length));
-				//buffer = buffer.get(frameData, signal.startBit.intValue()/8-1, signal.length.intValue()/8);
-				//buffer = buffer.
-				System.out.println("Buffer limit = " + buffer.limit());
-				System.out.println(signal.startBit);
-				System.out.println(signal.length);
-				int power = buffer.limit() * 8 - (signal.length + signal.startBit);
-				System.out.println("Starting power: " + power);
+				long power = (signal.startBit);
 				for(int i = 0; i < signal.length.intValue(); i ++) {
-					bitmask = (bitmask | (1 << power));
+					bitmask = (bitmask | (1L << power));
 					power ++;
 				}
+				
 				long bitData = 0;
-				bitData += buffer.getLong(); // Grab all 8 bits and convert into a long
+				long adjustment = 0;
+				
+				bitData = buffer.getLong();
 
 				byte[] recompiledData = new byte[buffer.limit()];
 				bitData = bitData & bitmask;
+				if(signal.byteOrder.equals(0)) {
+					bitData = bitData >>> signal.startBit; //Changed to >>> recently from >>
+					if(signal.dataType.equals("+")) {
+						for(int i = signal.length; i < 64; i++) {
+							adjustment = (adjustment | (1L << i));
+						}
+						bitData = bitData | adjustment;
+					}
+				}
+				else {
+					bitData = bitData << (long)(64 - (signal.startBit+signal.length));
+					if(signal.dataType.equals("+")) {
+						for(int i = 0; i < 64 - signal.length; i++) {
+							adjustment = (adjustment | (1L << i));
+						}
+						bitData = bitData | adjustment;
+					}
+				}
+				
 				for(int i = 7, j = 0; i >= 0; i--, j++) {
 					recompiledData[i] = (byte)(bitData >> j*8);
 				}
@@ -70,19 +83,40 @@ public class Translator {
 				buffer = buffer.put(recompiledData);
 				buffer.position(0);
 				if(signal.dataType.equals("float")) {
+					buffer.order(ByteOrder.BIG_ENDIAN);
 					double data = buffer.getFloat();
 					data += buffer.getFloat();
 					bikeData.put(signal.signalID, data);
 				}
-				else if(signal.dataType.equals("double")) {
-					double data = buffer.getDouble();
-					bikeData.put(signal.signalID, data);
+				else if(signal.dataType.equals("-")) {
+					if(signal.byteOrder.equals("0")) {
+						buffer.position(4);
+					}
+					else {
+						buffer.position(0);
+					}
+					long data = buffer.getLong();
+					data = data << 64 - signal.length;
+					data = data >>> 64-signal.length; // Not needed??
+					bikeData.put(signal.signalID, (double)data);
 				}
-				else {
+				else if(signal.dataType.equals("+")) {
+					if(signal.byteOrder.equals("0")) {
+						//buffer.position(4);
+					}
+					else {
+						buffer.position(0);
+					}
 					long data = buffer.getLong();
 					bikeData.put(signal.signalID, (double)data);
 				}
+				else{
+					buffer.order(ByteOrder.BIG_ENDIAN);
+					double data = buffer.getDouble();
+					bikeData.put(signal.signalID, data);
+				}
 			}
+			
 
 		}
 	}	
