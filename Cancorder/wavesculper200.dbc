@@ -1,0 +1,124 @@
+VERSION "HIPBNYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY/4/%%%/4/'%**4YYY///"
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+
+BS_:
+
+BU_:
+
+
+BO_ 1281 MotorDriveCommand: 8 Vector__XXX
+ SG_ MotorCurrentCommand : 32|32@1- (1,0) [0|1] "%" Vector__XXX
+ SG_ MotorVelocityCommand : 0|32@1- (1,0) [0|1] "%" Vector__XXX
+
+BO_ 1282 MotorPowerCommand: 8 Vector__XXX
+ SG_ BusCurrentCommand : 32|32@1- (1,0) [0|1] "%" Vector__XXX
+
+BO_ 1025 StatusInformation: 8 Vector__XXX
+ SG_ limit_outputvolt_pwm : 0|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ limit_motor_current : 1|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ limit_velocity : 2|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ limit_bus_current : 3|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ limit_bus_volt_upper : 4|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ limit_bus_volt_lower : 5|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ limit_temp : 6|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ error_hardware_over_current : 16|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ error_software_over_current : 17|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ error_DC_over_volt : 18|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ error_bad_position : 19|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ error_watchdog : 20|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ error_configread : 21|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ error_15v_under_volt : 22|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ error_desaturation : 23|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ Reserved_Limit : 7|9@1+ (1,0) [0|1e+006] "" Vector__XXX
+ SG_ Reserved_Error : 24|8@1+ (1,0) [0|1e+006] "" Vector__XXX
+
+BO_ 1026 BusMeasurement: 8 Vector__XXX
+ SG_ BusVoltage : 0|32@1- (1,0) [-1000|1000] "V" Vector__XXX
+ SG_ BusCurrent : 32|32@1- (1,0) [-1000|1000] "A" Vector__XXX
+
+BO_ 1027 VelocityMeasurment: 8 Vector__XXX
+ SG_ VehicleVelocity : 32|32@1- (1,0) [-1000|1000] "m/s" Vector__XXX
+ SG_ MotorVelocity : 0|32@1- (1,0) [-10000|10000] "rpm" Vector__XXX
+
+BO_ 1028 PhaseCurrentMeasurment: 8 Vector__XXX
+ SG_ PhaseCcurrent : 32|32@1- (1,0) [-10000|10000] "A" Vector__XXX
+ SG_ PhaseBcurrent : 0|32@1- (1,0) [-10000|10000] "A" Vector__XXX
+
+BO_ 1029 MotorVoltage: 8 Vector__XXX
+ SG_ MotorVd : 32|32@1- (1,0) [-10000|10000] "V" Vector__XXX
+ SG_ MotorVq : 0|32@1- (1,0) [-10000|10000] "VImaginary" Vector__XXX
+
+BO_ 1030 MotorCurrent: 8 Vector__XXX
+ SG_ MotorId : 32|32@1- (1,0) [-10000|10000] "A" Vector__XXX
+ SG_ MotorIq : 0|32@1- (1,0) [-10000|10000] "AImaginary" Vector__XXX
+
+BO_ 1035 Motor_PhaseA_Temperature: 8 Vector__XXX
+ SG_ PhaseAtemp : 32|32@1- (1,0) [-10000|10000] "C" Vector__XXX
+ SG_ MotorTemp : 0|32@1- (1,0) [-10000|10000] "C" Vector__XXX
+
+BO_ 1038 Odometer_amphours: 8 Vector__XXX
+ SG_ BusAmphours : 32|32@1- (1,0) [-10000|10000] "Ah" Vector__XXX
+ SG_ Odometer : 0|32@1- (1,0) [-10000|10000] "m" Vector__XXX
+
+BO_ 1031 BackEMF: 8 Vector__XXX
+ SG_ BEMFd : 32|32@1- (1,0) [-10000|10000] "" Vector__XXX
+ SG_ BEMFq : 0|32@1- (1,0) [-10000|10000] "" Vector__XXX
+
+BO_ 1032 Rail15v: 8 Vector__XXX
+ SG_ supply15v : 32|32@1- (1,0) [-100000|10000] "" Vector__XXX
+
+BO_ 1033 Rail3v3_1v9: 8 Vector__XXX
+ SG_ supply3v3 : 32|32@1- (1,0) [-1000|1000] "" Vector__XXX
+ SG_ supply1v9 : 0|32@1- (1,0) [-1000|1000] "" Vector__XXX
+
+BO_ 0 Phase_B_dsp_temprature: 8 Vector__XXX
+ SG_ PhaseB_Temp : 32|32@1- (1,0) [-100000|100000] "" Vector__XXX
+ SG_ DSP_temp : 0|32@1- (1,0) [-100000|100000] "" Vector__XXX
+
+
+SIG_VALTYPE_ 1281 MotorCurrentCommand : 1;
+SIG_VALTYPE_ 1281 MotorVelocityCommand : 1;
+SIG_VALTYPE_ 1282 BusCurrentCommand : 1;
+SIG_VALTYPE_ 1026 BusVoltage : 1;
+SIG_VALTYPE_ 1026 BusCurrent : 1;
+SIG_VALTYPE_ 1027 VehicleVelocity : 1;
+SIG_VALTYPE_ 1027 MotorVelocity : 1;
+SIG_VALTYPE_ 1028 PhaseCcurrent : 1;
+SIG_VALTYPE_ 1028 PhaseBcurrent : 1;
+SIG_VALTYPE_ 1029 MotorVd : 1;
+SIG_VALTYPE_ 1029 MotorVq : 1;
+SIG_VALTYPE_ 1030 MotorId : 1;
+SIG_VALTYPE_ 1030 MotorIq : 1;
+SIG_VALTYPE_ 1035 PhaseAtemp : 1;
+SIG_VALTYPE_ 1035 MotorTemp : 1;
+SIG_VALTYPE_ 1038 BusAmphours : 1;
+SIG_VALTYPE_ 1038 Odometer : 1;
+SIG_VALTYPE_ 1031 BEMFd : 1;
+SIG_VALTYPE_ 1031 BEMFq : 1;
+SIG_VALTYPE_ 1032 supply15v : 1;
+SIG_VALTYPE_ 1033 supply3v3 : 1;
+SIG_VALTYPE_ 1033 supply1v9 : 1;
+SIG_VALTYPE_ 0 PhaseB_Temp : 1;
+SIG_VALTYPE_ 0 DSP_temp : 1;
