@@ -14,7 +14,8 @@ public class tests {
 	}
 
 	public static void main(String[] args) {
-		DBFParser parser = new DBFParser("test.dbc");
+		//DBFParser parser = new DBFParser("~/test2.dbc");
+		DBFParser parser = new DBFParser("/home/sean/Desktop/test2.dbc");
 		testGetSignals(parser);
 		Bike bike = new Bike(parser);
 		Translator translator = new Translator(parser);

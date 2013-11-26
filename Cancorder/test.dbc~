@@ -34,8 +34,8 @@ BO_ 0 NewMessage0: 8 Vector__XXX
  SG_ float : 32|32@1- (1,0) [0|0] "" Vector__XXX
 
 BO_ 1 MessyMessage: 8 Vector__XXX
- SG_ NewSignal4 : 7|8@0+ (1,0) [0|0] "" Vector__XXX
- SG_ NewSignal5 : 16|4@0- (1,0) [0|0] "" Vector__XXX
+ SG_ NewSignal4 : 7|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ NewSignal5 : 16|4@1- (1,0) [0|0] "" Vector__XXX
 
 BO_ 2 NewMessage1: 8 Vector__XXX
 

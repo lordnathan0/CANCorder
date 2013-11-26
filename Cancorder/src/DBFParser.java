@@ -78,10 +78,6 @@ public class DBFParser {
 	public final ArrayList<Signal<String, Integer, Integer, Integer, String>> getSignals() {
 		return allSignals;
 	}
-
-	public static void main(String[] args){
-	    DBFParser parser = new DBFParser("wavesculper200.dbc");
-	}
 }
 
 
