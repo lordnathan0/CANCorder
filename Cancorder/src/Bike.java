@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+
 /**
  * Bike Class.
  * 
@@ -23,6 +24,17 @@ public final class Bike {
     private Map<String, Double> bikeData = new HashMap<String, Double>();
 
     /**
+     * Test Constructor.
+     */
+    public Bike() {
+        this.bikeData.put("ken", 1.0);
+        this.bikeData.put("James", 2.0);
+        this.bikeData.put("Kate", 3.0);
+        this.bikeData.put("Ish", 5.0);
+        this.bikeData.put("Nathan", 6.0);
+    }
+
+    /**
      * Public constructor to instantiate the Bike object.
      * 
      * @param parsedObject
@@ -41,7 +53,7 @@ public final class Bike {
         for (int i = 0; i < a.size(); i++) {
             String signalName = a.get(i).signalID;
             this.bikeData.put(signalName, value);
-       }
+        }
 
     }
 

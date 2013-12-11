@@ -41,6 +41,7 @@ public class Translator {
 				buffer.position(0);
 				long bitmask = 0;
 				long power = (startBit);
+				//Create bitmask with correct length and placement w/ respect to signal start and length
 				for(int i = 0; i < signal.length.intValue(); i ++) {
 					bitmask = (bitmask | (1L << power));
 					power ++;
@@ -51,9 +52,11 @@ public class Translator {
 				bitData = buffer.getLong();
 
 				byte[] recompiledData = new byte[buffer.limit()];
+				//Apply bitmask to the data from message
 				bitData = bitData & bitmask;
 				bitData = bitData >>> startBit;
 				
+				//Adjustment to obtain correct value for signed ints
 				long negativeThreshold = 2 << (signal.length-2);
 				if(signal.dataType.equals("-") && (negativeThreshold <= bitData)) {
 					for(int i = signal.length; i < 64; i++) {
@@ -61,7 +64,7 @@ public class Translator {
 					}
 					bitData = bitData | adjustment;
 				}
-				
+				//Bit shift depending on endianness
 				if(signal.byteOrder.equals(0)){
 					for(int i = 7, j = 0; i >= 0; i--, j++) {
 						recompiledData[i] = (byte)(bitData >> j*8);
@@ -77,6 +80,7 @@ public class Translator {
 				buffer.clear();
 				buffer = buffer.put(recompiledData);
 				buffer.position(0);
+				//Convert the byte data to correct data type and place into bike object
 				if(signal.dataType.equals("float")) {
 					double data = buffer.getFloat();
 					data += buffer.getFloat();

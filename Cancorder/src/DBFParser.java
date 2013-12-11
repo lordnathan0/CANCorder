@@ -42,7 +42,7 @@ public class DBFParser {
 				if(currentLine.startsWith(" SG_")) {
 					String[] strParts = currentLine.split("[ |@]");
 					Integer bits = (Integer.parseInt(strParts[5])) + Integer.parseInt(strParts[4]); // May not need anymore
-					System.out.println("BITS: " + bits.toString());
+					//System.out.println("BITS: " + bits.toString());
 					Signal<String, Integer, Integer, Integer, String> signal = new Signal<String, Integer, Integer, Integer, String>(strParts[2], Integer.parseInt(strParts[4]), Integer.parseInt(strParts[5]), Integer.parseInt(strParts[6].substring(0, 1)), strParts[6].substring(1,2));
 					allSignals.add(signal);
 					message.add(signal);
@@ -78,6 +78,7 @@ public class DBFParser {
 	public final ArrayList<Signal<String, Integer, Integer, Integer, String>> getSignals() {
 		return allSignals;
 	}
+
 }
 
 

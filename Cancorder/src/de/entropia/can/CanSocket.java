@@ -21,9 +21,10 @@ public final class CanSocket implements Closeable {
     static {
         final String LIB_JNI_SOCKETCAN = "jni_socketcan";
         try {
-            System.loadLibrary(LIB_JNI_SOCKETCAN);
+            //System.load("/home/root/Test/jni_socketcan.so");
+        	System.loadLibrary(LIB_JNI_SOCKETCAN);
         } catch (final UnsatisfiedLinkError e) {
-            try {
+        	try {
                 loadLibFromJar(LIB_JNI_SOCKETCAN);
             } catch (final IOException _e) {
                 throw new UnsatisfiedLinkError(LIB_JNI_SOCKETCAN);
