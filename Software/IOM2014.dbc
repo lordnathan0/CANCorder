@@ -693,6 +693,9 @@ BO_ 278 IMU4: 8 Vector__XXX
 BO_ 279 IMU5: 4 Vector__XXX
  SG_ Roll : 0|32@1- (1,0) [-4.29497e+009|4.29497e+009] "(Rad)" Vector__XXX
 
+BO_ 65 IMU_heartbeat: 2 Vector__XXX
+ SG_ IMU_Flags : 0|16@1+ (1,0) [0|0] "" Vector__XXX
+
 
 CM_ BO_ 33 "increments";
 CM_ BO_ 35 "increments";
@@ -706,6 +709,7 @@ CM_ BO_ 60 "increments";
 CM_ BO_ 62 "increments";
 CM_ BO_ 64 "increments";
 CM_ BO_ 1025 "increments";
+CM_ BO_ 65 "increments";
 SIG_VALTYPE_ 256 EstimatedPackFrameResistance : 1;
 SIG_VALTYPE_ 257 FrontBrakePressure : 1;
 SIG_VALTYPE_ 258 RearBrakePressure : 1;
@@ -753,4 +757,3 @@ SIG_VALTYPE_ 277 GravityZ : 1;
 SIG_VALTYPE_ 278 Yaw : 1;
 SIG_VALTYPE_ 278 Pitch : 1;
 SIG_VALTYPE_ 279 Roll : 1;
-
